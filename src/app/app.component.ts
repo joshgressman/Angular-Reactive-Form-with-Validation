@@ -14,6 +14,7 @@ export class AppComponent implements OnInit {
 //** Validation is done within the component not the template
  ngOnInit(){
    this.signupForm = new FormGroup({
+    //  'userData': new FormGroup({}), you can do nested form controls, other propertires would go into the object
      'username': new FormControl(null, Validators.required),
      'email':    new FormControl(null, [Validators.required, Validators.email]),
      'gender':   new FormControl('male')
