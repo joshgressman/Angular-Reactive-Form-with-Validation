@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormGroup, FormControl, Validators, FormArray } from '@angular/forms';
 //Make sure ReactiveFormsModule is imported in app.module
 @Component({
   selector: 'app-root',
@@ -17,7 +17,8 @@ export class AppComponent implements OnInit {
     //  'userData': new FormGroup({}), you can do nested form controls, other propertires would go into the object
      'username': new FormControl(null, Validators.required),
      'email':    new FormControl(null, [Validators.required, Validators.email]),
-     'gender':   new FormControl('male')
+     'gender':   new FormControl('male'),
+     'hobbies': new FormArray([])
 
    });
  }
@@ -26,4 +27,13 @@ export class AppComponent implements OnInit {
  onSubmit(){
   console.log(this.signupForm);
  }
+
+ // Add hobbies to the hobbies array form control
+ //The section in the html will dynamicaly add values to the hobbies array.
+ onAddHobby(){
+  //const control will push data to the hobbies array
+  const control = new FormControl(null, Validators.required);
+  (<FormArray>this.signupForm.get('hobbies')).push(control);
+ }
+
 }
