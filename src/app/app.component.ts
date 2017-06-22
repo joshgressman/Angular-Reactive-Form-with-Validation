@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators, FormArray } from '@angular/forms';
+import { Observable } from 'rxjs/Observable';
 //Make sure ReactiveFormsModule is imported in app.module
 @Component({
   selector: 'app-root',
@@ -19,7 +20,7 @@ export class AppComponent implements OnInit {
    this.signupForm = new FormGroup({
     //  'userData': new FormGroup({}), you can do nested form controls, other propertires would go into the object
      'username': new FormControl(null, [Validators.required, this.forbiddenNames.bind(this)]), //this.forbiddenNames = custom validator function
-     'email':    new FormControl(null, [Validators.required, Validators.email]),
+     'email':    new FormControl(null, [Validators.required, Validators.email], this.forbiddenEmails),
      'gender':   new FormControl('male'),
      'hobbies': new FormArray([])
 
@@ -45,6 +46,21 @@ export class AppComponent implements OnInit {
      return {'nameIsForbbidden': true};
    }
    return null;
+ }
+
+ //Asyncronouse validators when sending to a server
+ //the timeout function used to simualte reaching out to a server
+ forbiddenEmails(control: FormControl): Promise<any> | Observable<any> {
+   const promise = new Promise<any>((resolve, reject) => {
+    setTimeout(() => {
+      if(control.value === 'test@test.com'){
+        resolve({'emailIsForbidden': true});
+      } else {
+        resolve(null);
+      }
+    }, 1500);
+   });
+   return promise;
  }
 
 
