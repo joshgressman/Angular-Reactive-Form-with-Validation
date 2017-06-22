@@ -10,7 +10,9 @@
             formControlName="username"
             class="form-control">
             <!-- VALIDATION VIA ACCESSING THE CONTROLS OF VALID AND TOUCHED WITH .GET('_NAME_') -->
-            <span class="help-block" *ngIf="!signupForm.get('username').valid && signupForm.get('username').touched">Please enter a valid username!</span>
+            <span class="help-block" *ngIf="!signupForm.get('username').valid && signupForm.get('username').touched"><span *ngIf="signupForm.get('username').errors['nameIsForbbidden']">This is a forbidden username</span>
+            <span *ngIf="signupForm.get('username').errors['required']">This field is required!</span>
+            </span>
         </div>
         <div class="form-group">
           <label for="email">email</label>
