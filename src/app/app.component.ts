@@ -10,12 +10,15 @@ export class AppComponent implements OnInit {
   genders = ['male', 'female'];
   signupForm: FormGroup;   //Holds the data within the reactive form
 
+  //Custom validator > will be used to make sure these names are not used
+  forbiddenUsernames = ['Josh', 'Holly'];
+
  //initializes the value of the reactive form
 //** Validation is done within the component not the template
  ngOnInit(){
    this.signupForm = new FormGroup({
     //  'userData': new FormGroup({}), you can do nested form controls, other propertires would go into the object
-     'username': new FormControl(null, Validators.required),
+     'username': new FormControl(null, [Validators.required, this.forbiddenNames.bind(this)]), //this.forbiddenNames = custom validator function
      'email':    new FormControl(null, [Validators.required, Validators.email]),
      'gender':   new FormControl('male'),
      'hobbies': new FormArray([])
@@ -35,5 +38,15 @@ export class AppComponent implements OnInit {
   const control = new FormControl(null, Validators.required);
   (<FormArray>this.signupForm.get('hobbies')).push(control);
  }
+
+ //Custom validation function
+ forbiddenNames(control: FormControl): {[s: string]: boolean} {
+   if(this.forbiddenUsernames.indexOf(control.value) !== -1 ){
+     return {'nameIsForbbidden': true};
+   }
+   return null;
+ }
+
+
 
 }
